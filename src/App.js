@@ -7,7 +7,7 @@ class App extends Component {
     console.log(props.suit)
     console.log(props.rank)
     let rank = props.rank
-    const suits = {'H': '♥', 'D': '♦', 'C': '♠', 'S': '♠'};
+    const suits = {'H': '♥', 'D': '♦', 'C': '♣', 'S': '♠'};
     const getSuit = (suit) => {
       let returnSuit = '';
       let i = 0
@@ -21,18 +21,38 @@ class App extends Component {
       }
       return returnSuit
     }
+    let returnSuit = getSuit(props.suit)
+    let color = ''
+    switch (returnSuit) {
+      case '♥':
+        color = 'hearts'
+        break;
+      case '♦': 
+        color = 'diams'
+        break;
+      case '♣':
+        color = 'clubs'
+        break;
+      case '♠':
+        color = 'spades'
+        break;
+      default:
+        color = 'N'
+    }
     return (
-      <div className={`card rank-${rank.toLowerCase()} diams`}>
+      <div className={`card rank-${rank.toLowerCase()} ${color}`}>
         <span className="rank">{rank}</span>
-        <span className="suit">{getSuit(props.suit)}</span>
+        <span className="suit">{returnSuit}</span>
       </div>
     )
   }
   render() {
     return (
-      <div className="playingCards">
-        <this.Card rank="K" suit="C"></this.Card>
-        <this.Card rank="A" suit="D"></this.Card>
+      <div className="cards">
+        <button className="cards__refresh">Refresh</button>
+        <div className="playingCards">
+          <this.Card rank="K" suit="D"></this.Card>
+        </div>
       </div>
     )
   }
