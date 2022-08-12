@@ -3,19 +3,18 @@ import './App.css';
 import './cards.css';
 
 class App extends Component {
+  state = {
+    cards: []
+  }
   Card = (props) => {
-    console.log(props.suit)
-    console.log(props.rank)
     let rank = props.rank
     const suits = {'H': '♥', 'D': '♦', 'C': '♣', 'S': '♠'};
     const getSuit = (suit) => {
       let returnSuit = '';
       let i = 0
       for (let key in suits) {
-        console.log(key)
         if (key === suit) {
           returnSuit = Object.values(suits)[i]
-          console.log(returnSuit)
         }
         i++
       }
@@ -39,19 +38,47 @@ class App extends Component {
       default:
         color = 'N'
     }
+    const rankClass = (rank) => {
+      if (isNaN(rank)) {
+        return rank.toLowerCase();
+      } else {
+        return Number(rank)
+      }
+    }
     return (
-      <div className={`card rank-${rank.toLowerCase()} ${color}`}>
+      <div className={`card rank-${rankClass(rank)} ${color}`}>
         <span className="rank">{rank}</span>
         <span className="suit">{returnSuit}</span>
       </div>
     )
   }
+  randomCards = () => {
+    const newCards = this.state.cards;
+    newCards.length = 0;
+    const suits = ['H', 'D', 'C', 'S'];
+    const ranks = ['A', 'K', 'Q', 'J', 10, 9, 8, 7, 6, 5, 4, 3, 2]
+    for (let i = 0; i < 5; i++) {
+      let randSuitNum = Math.floor(Math.random() * suits.length);
+      let randRankNum = Math.floor(Math.random() * ranks.length);
+      let randSuit = suits[randSuitNum];
+      let randRank = ranks[randRankNum];
+      console.log(randSuit)
+      console.log(randRank)
+      newCards.push({rank: randRank, suit: randSuit})
+    }
+    console.log(newCards)
+    this.setState({
+      newCards
+    })
+  }
   render() {
     return (
       <div className="cards">
-        <button className="cards__refresh">Refresh</button>
+        <center><button className="cards__refresh" onClick={() => this.randomCards()}>Refresh</button></center>
         <div className="playingCards">
-          <this.Card rank="K" suit="D"></this.Card>
+          {this.state.cards.map((card) => {
+            return <this.Card suit={card.suit} rank={card.rank}></this.Card>
+          })}
         </div>
       </div>
     )

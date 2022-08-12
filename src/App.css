@@ -1,1 +1,12 @@
-
+.cards {
+  margin: 0 auto;
+  width: 500px;
+}
+.cards__refresh {
+  width: 100px
+}
+.playingCards {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
