@@ -75,19 +75,33 @@ class App extends Component {
     })
     this.arm()
   }
-  one = (massRank) => {
+  oneTwo = (massRank) => {
     console.log('one')
     let text = this.state.text;
-    text = 'Одна пара';
-    const has2 = arr => {
-      for (let i = 1; i < arr.length; i++) {
-        if (arr[i] === arr[i - 1]) {
-          return true
-        }
-      }
-      return false;
+    const text1 = 'Одна пара';
+    const text2 = 'Две пары';
+    let names = {};
+    function count(array){
+      array.forEach(item => {
+        names[item] = (names[item] || 0) + 1;
+      });
     }
-    if (has2(massRank)) {
+    count(massRank)
+    console.log(names)
+    let duo = 0;
+    for (let i in names) {
+      console.log(names[i])
+      if (names[i] >= 2) {
+        duo++
+      }
+    }
+    if (duo == 1) {
+      text = text1;
+      this.setState({
+        text
+      })
+    } else if (duo == 2) {
+      text = text2;
       this.setState({
         text
       })
@@ -103,7 +117,7 @@ class App extends Component {
       suits.push(newCards[i].suit)
       ranks.push(newCards[i].rank)
     }
-    this.one(ranks)
+    this.oneTwo(ranks)
   }
   render() {
     return (
