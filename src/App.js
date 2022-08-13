@@ -75,11 +75,14 @@ class App extends Component {
     })
     this.arm()
   }
-  oneTwo = (massRank) => {
+  oneTwoThree = (massRank) => {
     console.log('one')
     let text = this.state.text;
     const text1 = 'Одна пара';
     const text2 = 'Две пары';
+    const text3 = 'Тройка';
+    const text4 = 'Покер';
+    const text5 = 'Фулл-хаус';
     let names = {};
     function count(array){
       array.forEach(item => {
@@ -91,21 +94,22 @@ class App extends Component {
     let duo = 0;
     for (let i in names) {
       console.log(names[i])
-      if (names[i] >= 2) {
+      if (names[i] == 2) {
         duo++
+      } else if (names[i] == 3) {
+        duo += 3
       }
     }
     if (duo == 1) {
       text = text1;
-      this.setState({
-        text
-      })
     } else if (duo == 2) {
       text = text2;
-      this.setState({
-        text
-      })
+    } else if (duo == 3) {
+      text = text3;
     }
+    this.setState({
+      text
+    })
     
   }
   arm = () => {
@@ -117,7 +121,7 @@ class App extends Component {
       suits.push(newCards[i].suit)
       ranks.push(newCards[i].rank)
     }
-    this.oneTwo(ranks)
+    this.oneTwoThree(ranks)
   }
   render() {
     return (
