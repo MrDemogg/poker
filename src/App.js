@@ -75,7 +75,7 @@ class App extends Component {
     })
     this.arm()
   }
-  oneTwoThree = (massRank) => {
+  detecter = (massRank) => {
     console.log('one')
     let text = this.state.text;
     const text1 = 'Одна пара';
@@ -83,6 +83,10 @@ class App extends Component {
     const text3 = 'Тройка';
     const text4 = 'Покер';
     const text5 = 'Фулл-хаус';
+    const rank5A = massRank[0];
+    const rank5B = massRank[3];
+    let rank5Bbull = false;
+    let rank5Abull = false;
     let names = {};
     function count(array){
       array.forEach(item => {
@@ -97,7 +101,9 @@ class App extends Component {
       if (names[i] == 2) {
         duo++
       } else if (names[i] == 3) {
-        duo += 3
+        duo = 3
+      } else if (names[i] == 4) {
+        duo = 4
       }
     }
     if (duo == 1) {
@@ -106,6 +112,29 @@ class App extends Component {
       text = text2;
     } else if (duo == 3) {
       text = text3;
+    } else if (duo == 4) {
+      text = text4;
+    } else {
+      text = '';
+    }
+    for (let i = 0; i < 3; i++) {
+      if (massRank[i] == rank5A) {
+        rank5Abull = true;
+      } else {
+        rank5Abull = false;
+        i += 99
+      }
+    }
+    for (let i = 3; i < 5; i++) {
+      if (massRank[i] == rank5B) {
+        rank5Bbull = true;
+      } else {
+        rank5Bbull = false;
+        i += 99
+      }
+    }
+    if (rank5Abull && rank5Bbull) {
+      text = text5;
     }
     this.setState({
       text
@@ -121,7 +150,7 @@ class App extends Component {
       suits.push(newCards[i].suit)
       ranks.push(newCards[i].rank)
     }
-    this.oneTwoThree(ranks)
+    this.detecter(ranks)
   }
   render() {
     return (
