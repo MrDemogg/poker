@@ -6,7 +6,7 @@ class App extends Component {
   state = {
     cards: [],
     text: '',
-    ranks: ['J', 'Q', 'A', 'K', 10, 9, 5, 8, 7, 6],
+    ranks: ['A', 'K', 'J', 'Q', 10, 9, 8, 7, 6, 5, 4, 3, 2],
     suits: ['H', 'D', 'C', 'S'],
     usedRanks: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     usedSuits: [0, 0, 0, 0],
@@ -100,7 +100,8 @@ class App extends Component {
       const text4 = 'Покер';
       const text5 = 'Фулл-хаус';
       const text6 = 'Флэш';
-      const text7 = 'Стрит'
+      const text7 = 'Стрит';
+      const text8 = 'Стрит-флэш';
       const rank5A = massRank[0];
       const rank5B = massRank[3];
       let rank5Bbull = false;
@@ -177,20 +178,41 @@ class App extends Component {
       if (repeatsSuit === 1) {
         text = text6
       }
-      let numberArr = false;
+      let fourNumberArr = false;
+      let fullNumberArr = false;
       massRank.sort()
       for (let i = 0; i < massRank.length - 1; i++) {
         if (!isNaN(massRank[i])) {
-          numberArr = true
+          fourNumberArr = true
         } else if (isNaN(massRank[i]) || massRank[i] === 10) {
-          numberArr = false;
+          fourNumberArr = false;
           i += 99
         }
       }
-      console.log(massRank.sort())
+      for (let i = 0; i < massRank.length; i++) {
+        if (!isNaN(massRank[i])) {
+          fullNumberArr = true
+        } else if (isNaN[massRank[i]] || massRank[i] === 10) {
+          fullNumberArr = false;
+          i += 99
+        }
+      }
       console.log(massRank[0] + 1 === massRank[1])
-      if (numberArr && massRank[0] + 1 === massRank[1] && massRank[1] + 1 === massRank[2] && massRank[2] + 1 === massRank[3] && massRank[4] === 'J') {
+      if (fourNumberArr && massRank[0] + 1 === massRank[1] && massRank[1] + 1 === massRank[2] && massRank[2] + 1 === massRank[3] && massRank[4] === 'J') {
         text = text7
+      }
+      let sampleSuit = massSuit[0];
+      let oneSuitArr = false;
+      for (let i = 0; i < massSuit.length; i++) {
+        if (massSuit[i] === sampleSuit) {
+          oneSuitArr = true
+        } else if (massSuit[i] !== sampleSuit) {
+          oneSuitArr = false;
+          i += 99
+        }
+      }
+      if (oneSuitArr && fullNumberArr && massRank[0] + 1 === massRank[1] && massRank[1] + 1 === massRank[2] && massRank[2] + 1 === massRank[3] && massRank[3] + 1 === massRank[4]) {
+        text = text8
       }
       this.setState({
         text
