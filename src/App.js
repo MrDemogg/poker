@@ -5,7 +5,9 @@ import './cards.css';
 class App extends Component {
   state = {
     cards: [],
-    text: ''
+    text: '',
+    usedRanks: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    empty: false
   }
   Card = (props) => {
     let rank = props.rank
@@ -54,30 +56,62 @@ class App extends Component {
     )
   }
   randomCards = () => {
-    const newCards = this.state.cards;
-    let text = this.state.text;
-    newCards.length = 0;
-    text = '';
-    this.setState({
-      text
-    })
-    const suits = ['H', 'D', 'C', 'S'];
-    const ranks = ['A', 'K', 'Q', 'J', 10, 9, 8, 7, 6, 5, 4, 3, 2]
-    for (let i = 0; i < 5; i++) {
-      let randSuitNum = Math.floor(Math.random() * suits.length);
-      let randRankNum = Math.floor(Math.random() * ranks.length);
-      let randSuit = suits[randSuitNum];
-      let randRank = ranks[randRankNum];
-      newCards.push({rank: randRank, suit: randSuit})
+    if (!this.state.empty || this.state.text !== 'Нету') {
+      const cards = this.state.cards;
+      const usedRanks = this.state.usedRanks;
+      let text = this.state.text;
+      cards.length = 0;
+      text = '';
+      this.setState({
+        text
+      })
+      const suits = ['H', 'D', 'C', 'S'];
+      const ranks = ['A', 'K', 'Q', 'J', 10, 9, 8, 7, 6, 5, 4, 3, 2]
+      let empty = this.state.empty;
+      let research = true
+      for (let i = 0; i < 5; i++) {
+        let randSuitNum = Math.floor(Math.random() * suits.length);
+        let randRankNum = Math.floor(Math.random() * ranks.length);
+        console.log(randRankNum)
+        while (usedRanks[randRankNum] == 4 && research) {
+          if (ranks.length == 0) {
+            ranks.push('нету')
+            randRankNum = 0;
+            text = 'Карты закончились'; 
+            empty = true;
+            research = false
+            this.setState({
+              text,
+              empty
+            })
+          } else {
+            ranks.splice(randRankNum, 1)
+            randRankNum = Math.floor(Math.random() * ranks.length);
+            console.log(randRankNum)
+            console.log(ranks)
+          }
+          this.setState({
+            usedRanks
+          })
+        }
+        let randRank = ranks[randRankNum];
+        if (!research) {
+          break;
+        }
+        let randSuit = suits[randSuitNum];
+        cards.push({rank: randRank, suit: randSuit})
+        usedRanks[randRankNum]++
+      }
+      this.setState({
+        cards
+      })
+      this.arm()
     }
-    this.setState({
-      newCards
-    })
-    this.arm()
   }
   detecter = (massRank) => {
     console.log('one')
     let text = this.state.text;
+    const empty = this.state.empty;
     const text1 = 'Одна пара';
     const text2 = 'Две пары';
     const text3 = 'Тройка';
@@ -136,6 +170,9 @@ class App extends Component {
     if (rank5Abull && rank5Bbull) {
       text = text5;
     }
+    if (empty) {
+      text = 'Нету'
+    }
     this.setState({
       text
     })
@@ -143,12 +180,12 @@ class App extends Component {
   }
   arm = () => {
     console.log('arm')
-    const newCards = this.state.cards
+    const cards = this.state.cards
     const suits = [];
     const ranks = [];
-    for (let i = 0; i < newCards.length; i++) {
-      suits.push(newCards[i].suit)
-      ranks.push(newCards[i].rank)
+    for (let i = 0; i < cards.length; i++) {
+      suits.push(cards[i].suit)
+      ranks.push(cards[i].rank)
     }
     this.detecter(ranks)
   }
