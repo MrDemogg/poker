@@ -102,6 +102,7 @@ class App extends Component {
       const text6 = 'Флэш';
       const text7 = 'Стрит';
       const text8 = 'Стрит-флэш';
+      const text9 = 'Роял-флэш'
       const rank5A = massRank[0];
       const rank5B = massRank[3];
       let rank5Bbull = false;
@@ -213,6 +214,9 @@ class App extends Component {
       }
       if (oneSuitArr && fullNumberArr && massRank[0] + 1 === massRank[1] && massRank[1] + 1 === massRank[2] && massRank[2] + 1 === massRank[3] && massRank[3] + 1 === massRank[4]) {
         text = text8
+      }
+      if (oneSuitArr && massRank[0] === 10 && massRank[1] === 'A' && massRank[2] === 'J' && massRank[3] === 'K' && massRank[4] === 'Q') {
+        text = text9
       }
       this.setState({
         text
