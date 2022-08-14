@@ -6,7 +6,7 @@ class App extends Component {
   state = {
     cards: [],
     text: '',
-    ranks: ['A', 'Q', 'K', 'J', 10, 9, 8, 7, 6, 5, 4, 3, 2],
+    ranks: ['J', 'Q', 'A', 'K', 10, 9, 5, 8, 7, 6],
     suits: ['H', 'D', 'C', 'S'],
     usedRanks: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     usedSuits: [0, 0, 0, 0],
@@ -179,16 +179,18 @@ class App extends Component {
       }
       let numberArr = false;
       massRank.sort()
-      for (let f = 1; f < massRank.length - 1; f++) {
-        if (!isNaN(massRank[f])) {
+      for (let i = 0; i < massRank.length - 1; i++) {
+        if (!isNaN(massRank[i])) {
           numberArr = true
-        } else if (isNaN(massRank[f])) {
+        } else if (isNaN(massRank[i]) || massRank[i] === 10) {
           numberArr = false;
-          f += 99
+          i += 99
         }
-        if (numberArr && massRank[f - 1] + 1 === massRank[f] && massRank[4] === 'J') {
-          text = text7
-        }
+      }
+      console.log(massRank.sort())
+      console.log(massRank[0] + 1 === massRank[1])
+      if (numberArr && massRank[0] + 1 === massRank[1] && massRank[1] + 1 === massRank[2] && massRank[2] + 1 === massRank[3] && massRank[4] === 'J') {
+        text = text7
       }
       this.setState({
         text
